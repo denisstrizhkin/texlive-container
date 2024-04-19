@@ -1,21 +1,21 @@
 FROM gentoo/stage3
 
-RUN emerge-webrsync && emerge --sync
-RUN emerge getuto && getuto
-RUN emerge -g mirrorselect && mirrorselect -s3 -b10 -D -R Europe
+RUN emerge-webrsync && getuto \
+    && emerge -g -j5 mirrorselect && mirrorselect -s3 -D \
+    && rm -rf /var/cache/distfiles && rm -rf /var/db/repos/gentoo
 
-RUN rmdir /etc/portage/package.use
+RUN cat <<EOF > /etc/portage/package.use/texlive
+app-text/texlive cjk png truetype xml context extra graphics
+app-text/texlive humanities luatex metapost pstricks publishers 
+app-text/texlive science lex4ht xetex L10N: en ru el 
+app-text/texlive-core cjk xetex
+media-libs/harfbuzz icu
+EOF
 
-RUN echo 'app-text/texlive cjk png truetype xml context extra graphics' \
-'humanities luatex metapost pstricks publishers' \
-'science lex4ht xetex L10N: en ru el' > /etc/portage/package.use \
-&& echo 'app-text/texlive-core cjk xetex' >> /etc/portage/package.use \
-&& echo 'media-libs/harfbuzz icu' >> /etc/portage/package.use
-
-RUN emerge -g -j5 texlive
-RUN emerge -g -j5 dev-tex/biblatex
+RUN emerge-webrsync && emerge -g -j5 texlive dev-tex/biblatex \
+    && rm -rf /var/cache/distfiles && rm -rf /var/db/repos/gentoo
 
 RUN echo 'media-fonts/corefonts MSttfEULA' > /etc/portage/package.license
-RUN emerge -g -j5 media-fonts/corefonts
 
-RUN rm -rf /var/cache/distfiles
+RUN emerge-webrsync && emerge -g -j5 media-fonts/corefonts \
+    && rm -rf /var/cache/distfiles && rm -rf /var/db/repos/gentoo
