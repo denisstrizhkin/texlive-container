@@ -1,8 +1,7 @@
 FROM gentoo/stage3
 
-RUN emerge-webrsync && getuto \
-    && emerge -g -j5 mirrorselect && mirrorselect -s3 -D \
-    && rm -rf /var/cache/distfiles && rm -rf /var/db/repos/gentoo
+RUN echo 'GENTOO_MIRRORS="https://ftp.lysator.liu.se/gentoo/"' >> /etc/portage/make.conf \
+    && getuto
 
 RUN cat <<EOF > /etc/portage/package.use/texlive
 app-text/texlive cjk png truetype xml context extra graphics
