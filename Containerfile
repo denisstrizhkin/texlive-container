@@ -8,6 +8,10 @@ app-text/texlive-core cjk xetex
 media-libs/harfbuzz icu
 EOF
 
+# Fix for QEMU/Binfmt PTY issues
+ENV TERM=dumb
+ENV FEATURES="-binpkg-logs -ipc-sandbox -pid-sandbox -network-sandbox -usersandbox"
+
 RUN echo 'media-fonts/corefonts MSttfEULA' > /etc/portage/package.license
 
 RUN getuto && \
