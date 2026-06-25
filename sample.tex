@@ -1,0 +1,77 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+% Настройка поддержки русского языка и системных шрифтов
+\usepackage{fontspec}
+\usepackage[russian]{babel}
+
+% Установка заданных шрифтов
+\setmainfont{Times New Roman}
+\setmonofont{Courier New}
+
+% Настройка полей страницы
+\usepackage{geometry}
+\geometry{a4paper, top=2cm, bottom=2cm, left=3cm, right=1.5cm}
+
+% Пакет для оформления сниппетов кода
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small, % Использование моноширинного шрифта (Courier New)
+    frame=single,
+    breaklines=true,
+    backgroundcolor=\color{gray!5},
+    xleftmargin=0.5cm,
+    showstringspaces=false
+}
+
+% Пакет для кликабельных ссылок
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\title{Описание репозитория \texttt{texlive-container}}
+\date{}
+\maketitle
+
+\section*{Обзор проекта}
+
+Репозиторий 
+\href{https://github.com/denisstrizhkin/texlive-container}{texlive-container} 
+представляет собой проект конфигурации для развертывания
+издательской системы \TeX\ Live в изолированном контейнере. 
+
+Ключевой особенностью данного решения является использование дистрибутива
+Alpine Linux в качестве базового образа системы.
+Это позволяет получить легковесную и готовую к работе среду для компиляции 
+\LaTeX-документов без необходимости устанавливать
+множество дополнительных пакетов и зависимостей в основную операционную систему.
+
+\section*{Использование и сборка образа}
+
+Для работы с проектом и локальной сборки образа контейнера используется
+инструмент \texttt{podman} (или \texttt{docker}). В официальной документации репозитория 
+приводится следующая команда для загрузки исходного кода
+и запуска процесса сборки:
+
+\begin{lstlisting}[language=bash]
+podman build -t texlive https://github.com/denisstrizhkin/texlive-container.git
+\end{lstlisting}
+
+После успешного выполнения данной команды в вашей системе появится готовый
+образ с именем \texttt{texlive}.
+Его можно использовать для автоматизации процессов сборки научных статей,
+отчетов и презентаций, а также для интеграции в CI/CD пайплайны.
+
+Чтобы скомпилировать документ внутри контейнера, необходимо примонтировать 
+текущую рабочую директорию. Например, данный документ можно скомпилировать следующей командой:
+\begin{lstlisting}[language=bash]
+podman run --rm -v "$PWD":/data -w /data texlive lualatex sample.tex
+\end{lstlisting}
+
+При использовании \texttt{docker} команда аналогична:
+\begin{lstlisting}[language=bash]
+docker run --rm -v "$PWD":/data -w /data texlive lualatex sample.tex
+\end{lstlisting}
+
+\end{document}
