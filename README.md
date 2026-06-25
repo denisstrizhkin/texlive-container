@@ -8,6 +8,20 @@ This container allows you to compile LaTeX documents without installing TeX Live
 
 You need either **Podman** or **Docker** installed on your host system.
 
+## Pulling the Pre-built Image
+
+Instead of building the image yourself, you can pull the pre-built multi-architecture image directly from the GitHub Container Registry and tag it locally as `texlive`:
+
+```bash
+# Using Podman
+podman pull ghcr.io/denisstrizhkin/texlive-container:latest
+podman tag ghcr.io/denisstrizhkin/texlive-container:latest texlive
+
+# Using Docker
+docker pull ghcr.io/denisstrizhkin/texlive-container:latest
+docker tag ghcr.io/denisstrizhkin/texlive-container:latest texlive
+```
+
 ## Building the Image
 
 You can build the container image in one of two ways:

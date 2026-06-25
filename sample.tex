@@ -49,16 +49,25 @@ Alpine Linux в качестве базового образа системы.
 
 \section*{Использование и сборка образа}
 
-Для работы с проектом и локальной сборки образа контейнера используется
-инструмент \texttt{podman} (или \texttt{docker}). В официальной документации репозитория 
-приводится следующая команда для загрузки исходного кода
-и запуска процесса сборки:
+Для работы с проектом можно загрузить готовый многоархитектурный образ из GitHub Container Registry и тегировать его локально как \texttt{texlive}:
+
+\begin{lstlisting}[language=bash]
+# Загрузка и тегирование через Podman
+podman pull ghcr.io/denisstrizhkin/texlive-container:latest
+podman tag ghcr.io/denisstrizhkin/texlive-container:latest texlive
+
+# Загрузка и тегирование через Docker
+docker pull ghcr.io/denisstrizhkin/texlive-container:latest
+docker tag ghcr.io/denisstrizhkin/texlive-container:latest texlive
+\end{lstlisting}
+
+В качестве альтернативы, образ можно собрать самостоятельно. В официальной документации приводится следующая команда для сборки напрямую из репозитория Git:
 
 \begin{lstlisting}[language=bash]
 podman build -t texlive https://github.com/denisstrizhkin/texlive-container.git
 \end{lstlisting}
 
-После успешного выполнения данной команды в вашей системе появится готовый
+После успешного выполнения одной из этих команд в вашей системе появится готовый
 образ с именем \texttt{texlive}.
 Его можно использовать для автоматизации процессов сборки научных статей,
 отчетов и презентаций, а также для интеграции в CI/CD пайплайны.
